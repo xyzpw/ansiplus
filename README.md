@@ -4,8 +4,9 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/xyzpw/ansiplus)
 ![PyPI - License](https://img.shields.io/pypi/l/ansiplus)
 
-
 A Python package designed to enhance code readability and CLI experience.
+
+![ansiplus-preview](https://github.com/xyzpw/ansiplus/assets/76017734/bf852703-e04a-444e-aa78-7bdaae98ac41)
 
 # Usage
 > [!WARNING]

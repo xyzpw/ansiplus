@@ -8,7 +8,7 @@ from .commands.styletext import stylize_text
 from .commands.cursorcontrols import *
 import ansiplus.ansi.colors, ansiplus.ansi.cursor, ansiplus.ansi.erase, ansiplus.ansi.styles
 
-__version__ = "1.0.1"
+__version__ = "1.0.1.post1"
 __author__ = "xyzpw"
 __description__ = "A Python package designed to enhance code readability and CLI experience."
 

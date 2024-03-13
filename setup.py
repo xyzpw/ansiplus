@@ -11,6 +11,7 @@ setuptools.setup(
     maintainer=__author__,
     version=__version__,
     description=__description__,
+    url="https://github.com/xyzpw/ansiplus/",
     python_required=">= 3.10",
     long_description=getReadme(),
     long_description_content_type="text/markdown",

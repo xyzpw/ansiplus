@@ -6,9 +6,9 @@ ESC = "\x1b"
 from .commands.colortext import colorize, colorizeRGB
 from .commands.styletext import stylize_text
 from .commands.cursorcontrols import *
-from . import ansi
+import ansiplus.ansi.colors, ansiplus.ansi.cursor, ansiplus.ansi.erase, ansiplus.ansi.styles
 
-__version__ = "1.0"
+__version__ = "1.0.1"
 __author__ = "xyzpw"
 __description__ = "A Python package designed to enhance code readability and CLI experience."
 
@@ -25,12 +25,12 @@ def set_color(color: str|int = None, bgcolor: str|int = None):
     hasBG = validateColorList(bgcolor)
     if hasFG:
         if isinstance(color, int):
-            print(ansi.colors.fromid(color, "foreground"), end='')
+            print(ansiplus.ansi.colors.fromid(color, "foreground"), end='')
         elif isinstance(color, str):
             print(colorList[color.upper()], end='')
     if hasBG:
         if isinstance(bgcolor, int):
-            print(ansi.colors.fromid(bgcolor, "background"), end='')
+            print(ansiplus.ansi.colors.fromid(bgcolor, "background"), end='')
         elif isinstance(bgcolor, str):
             print(bgColorList[bgcolor.upper()], end='')
 
@@ -58,12 +58,12 @@ def input_color(text: str = "", color: str|int = None, revert_color: str|int = '
         if not validateColorList(color):
             raise ValueError("reset color does not exist")
     if isinstance(color, int):
-        out = input(text + ansi.colors.fromid(color))
+        out = input(text + ansiplus.ansi.colors.fromid(color))
     elif isinstance(color, str):
         out = input(text + colorList[color.upper()])
     if revert_color != False:
         if isinstance(revert_color, int):
-            print(ansi.colors.fromid(revert_color), end='')
+            print(ansiplus.ansi.colors.fromid(revert_color), end='')
         elif isinstance(revert_color, str):
             print(colorList[revert_color.upper()], end='')
     return out
@@ -86,11 +86,11 @@ def print_rgb(text: str, rgb: tuple = (), bg_rgb: tuple = ()):
 
 def save_cursor_position():
     """Saves the cursor position."""
-    print(ansi.cursor.SAVE_POSITION, end='')
+    print(ansiplus.ansi.cursor.SAVE_POSITION, end='')
 
 def restore_cursor_position():
     """Restores cursor to the last saved position."""
-    print(ansi.cursor.RESTORE_POSITION)
+    print(ansiplus.ansi.cursor.RESTORE_POSITION)
 
 def move_cursor(direction: str, no: int = 1):
     """Moves the cursor up, down, right, and left by a specified distance.
@@ -113,13 +113,13 @@ def move_cursor(direction: str, no: int = 1):
             print(cursor_left(no), end='')
         case "home":
             # the `no` arg has no effect on this option
-            print(ansi.cursor.HOME, end='')
+            print(ansiplus.ansi.cursor.HOME, end='')
 
 def set_cursor_position(row: int, column: int):
     """Moves the cursor to a specific position according to the specified row and column."""
     if not isinstance(row, int) or not isinstance(column, int):
         raise TypeError("row and column values must be integers")
-    print(ansi.cursor.set_position(row, column), end='')
+    print(ansiplus.ansi.cursor.set_position(row, column), end='')
 
 def set_cursor_visibility(visible: bool):
     """Makes the cursor visible or invisible.
@@ -129,9 +129,9 @@ def set_cursor_visibility(visible: bool):
     if not isinstance(visible, bool):
         raise TypeError("cursor visibility must be type boolean")
     if visible:
-        print(ansi.cursor.VISIBLE, end='')
+        print(ansiplus.ansi.cursor.VISIBLE, end='')
     elif not visible:
-        print(ansi.cursor.INVISIBLE, end='')
+        print(ansiplus.ansi.cursor.INVISIBLE, end='')
 
 def erase_row(no: int = 0):
     """Clears specified row number.
@@ -142,15 +142,15 @@ def erase_row(no: int = 0):
     if not isinstance(no, int):
         raise TypeError("row number must be an integer")
     if no > 0:
-        print(ansi.cursor.cursor_up(no), end='')
-        print(ansi.erase.LINE, end='')
-        print(ansi.cursor.cursor_down(no), end='')
+        print(ansiplus.ansi.cursor.cursor_up(no), end='')
+        print(ansiplus.ansi.erase.LINE, end='')
+        print(ansiplus.ansi.cursor.cursor_down(no), end='')
     if no < 0:
-        print(ansi.cursor.cursor_down(abs(no)), end='')
-        print(ansi.erase.LINE, end='')
-        print(ansi.cursor.cursor_up(abs(no)), end='')
+        print(ansiplus.ansi.cursor.cursor_down(abs(no)), end='')
+        print(ansiplus.ansi.erase.LINE, end='')
+        print(ansiplus.ansi.cursor.cursor_up(abs(no)), end='')
     if no == 0:
-        print(ansi.erase.LINE, end='')
+        print(ansiplus.ansi.erase.LINE, end='')
 
 def clear_screen(clear_type: str = "screen"):
     """Clears the screen with ANSI codes.
@@ -165,19 +165,19 @@ def clear_screen(clear_type: str = "screen"):
     """
     match clear_type:
         case "screen":
-            print(ansi.erase.SCREEN, end='')
+            print(ansiplus.ansi.erase.SCREEN, end='')
         case "bottom":
-            print(ansi.erase.BOTTOM_SCREEN, end='')
+            print(ansiplus.ansi.erase.BOTTOM_SCREEN, end='')
         case "top":
-            print(ansi.erase.TOP_SCREEN, end='')
+            print(ansiplus.ansi.erase.TOP_SCREEN, end='')
         case "buffer" | "saved":
-            print(ansi.erase.BUFFER, end='')
+            print(ansiplus.ansi.erase.BUFFER, end='')
         case "cursorToLineEnd" | "cursor_to_line_end" | "cursor-to-line-end":
-            print(ansi.erase.CURSOR_TO_LINE_END, end='')
+            print(ansiplus.ansi.erase.CURSOR_TO_LINE_END, end='')
         case "lineToCursor" | "line_to_cursor" | "line-to-cursor":
-            print(ansi.erase.LINE_TO_CURSOR, end='')
+            print(ansiplus.ansi.erase.LINE_TO_CURSOR, end='')
         case "line":
-            print(ansi.erase.LINE, end='')
+            print(ansiplus.ansi.erase.LINE, end='')
 
 def reset_colors_and_styles():
     """Resets all colors and styles."""

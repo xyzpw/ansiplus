@@ -8,7 +8,7 @@ from .commands.styletext import stylize_text
 from .commands.cursorcontrols import *
 import ansiplus.ansi.colors, ansiplus.ansi.cursor, ansiplus.ansi.erase, ansiplus.ansi.styles
 
-__version__ = "1.0.1.post1"
+__version__ = "1.1.0"
 __author__ = "xyzpw"
 __description__ = "A Python package designed to enhance code readability and CLI experience."
 
@@ -68,6 +68,26 @@ def input_color(text: str = "", color: str|int = None, revert_color: str|int = '
             print(colorList[revert_color.upper()], end='')
     return out
 
+class NewPrompt:
+    def __init__(self):
+        self.color = "RESET"
+        self.revert_color = "RESET"
+        self.history = []
+        self.latest = ""
+    def prompt(self, text: str = "", color: str|int = None, revert_color: str|int = None) -> str:
+        workingColor = color if bool(color) else self.color
+        workingRevertColor = revert_color if bool(revert_color) else self.revert_color
+        _out = input_color(text, workingColor, workingRevertColor)
+        self.history.append(_out)
+        self.latest = _out
+        return _out
+    def clear_history(self):
+        self.history = []
+        self.latest = None
+    def set_color(self, color: str, revert_color: str|int = "RESET") -> str:
+        self.color = color
+        self.revert_color = revert_color
+
 def print_style(text: str, style: str):
     """Prints text with the style specified.
 
@@ -90,7 +110,7 @@ def save_cursor_position():
 
 def restore_cursor_position():
     """Restores cursor to the last saved position."""
-    print(ansiplus.ansi.cursor.RESTORE_POSITION)
+    print(ansiplus.ansi.cursor.RESTORE_POSITION, end='')
 
 def move_cursor(direction: str, no: int = 1):
     """Moves the cursor up, down, right, and left by a specified distance.
@@ -152,9 +172,10 @@ def erase_row(no: int = 0):
     if no == 0:
         print(ansiplus.ansi.erase.LINE, end='')
 
-def clear_screen(clear_type: str = "screen"):
+def clear_screen(clear_type: str = "all"):
     """Clears the screen with ANSI codes.
 
+    :clear_type all:             moves cursor to home position prior to clearing screen
     :clear_type screen:          clears entire screen while keeping cursor position
     :clear_type bottom:          clears from from cursor to bottom
     :clear_type top:             clears from cursor to top
@@ -164,6 +185,8 @@ def clear_screen(clear_type: str = "screen"):
     :clear_type line:            clears the entire line
     """
     match clear_type:
+        case "all":
+            print(ansiplus.ansi.erase.ALL, end='')
         case "screen":
             print(ansiplus.ansi.erase.SCREEN, end='')
         case "bottom":

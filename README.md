@@ -8,7 +8,7 @@ A Python package designed to enhance code readability and CLI experience.
 
 ![ansiplus-preview](https://github.com/xyzpw/ansiplus/assets/76017734/bf852703-e04a-444e-aa78-7bdaae98ac41)
 
-# Usage
+## Usage
 > [!WARNING]
 > Not all terminals work perfectly with ANSI codes.
 > Ideally you should use xterm-256color.
@@ -16,7 +16,7 @@ A Python package designed to enhance code readability and CLI experience.
 > [!NOTE]
 > Terminal themes can change colors, e.g. magenta might show up as yellow, but it is still using the magenta ANSI code.
 
-## Prerequisites
+### Prerequisites
 - Python version >=3.10
 - A terminal emulator that accepts ANSI codes
 - A terminal emulator that uses xterm-256color
@@ -24,14 +24,14 @@ A Python package designed to enhance code readability and CLI experience.
 > [!NOTE]
 > ANSI codes aren't just limited to xterm-256color, but they may still be limited to all features this package includes.
 
-### Tested Terminals on Linux
+#### Tested Terminals on Linux
 Terminal ($TERM)
 - Konsole (xterm-256color) - no missing features
 - Xterm (xterm) - no missing features
 - Alacritty (alacritty) - blinking text does not work
 - Kitty (xterm-kitty) - blinking text does not work
 
-## Colors
+### Colors
 Printing colored text can be used from a single function:
 ```python
 >>> from ansiplus import print_color
@@ -60,7 +60,7 @@ custom rgb text
 >>>
 ```
 
-## User Input
+### User Input
 User input during a prompt can be colored:
 ```python
 >>> from ansiplus import input_color
@@ -69,7 +69,25 @@ name:
 >>>
 ```
 
-## Text Styles
+Classes can be used for input, which will allow the ability to have user input history:
+```python
+>>> from ansiplus import NewPrompt
+>>> myprompt = NewPrompt()
+>>> myprompt.set_color("blue")
+>>> myprompt.prompt("say something: ")
+say something: this text is blue
+'this text is blue'
+>>> myprompt.prompt("say something: ", 'red')
+say something: this text is red, default is blue
+'this text is red, default is blue'
+>>> myprompt.latest
+'this text is red, default is blue'
+>>> myprompt.history
+['this text is blue', 'this text is red, default is blue']
+>>>
+```
+
+### Text Styles
 Text can be stylized and printed:
 ```python
 >>> from ansiplus import print_style
@@ -89,18 +107,16 @@ bold text
 >>>
 ```
 
-## More Functions
+### More Functions
 There are more ANSI code features beyond colors and styles, these could be viewed by using `help(ansiplus)` inside the python interpreter.
 
-# Developers
-
-## Building
+## Developers
 ### Wheels
-When building the package for testing, it is recommended to use `python3 -m build`
+When building the package for testing, it is recommended to use `python3 -m build`.
 ### PIP Virtual Environments
 Virtual environments should be named ".venv" or ".env", as this is used in the ".gitignore" file.
 
-## Contributing
+### Contributing
 Contributions must not include:
 - breaking code
 - major changes

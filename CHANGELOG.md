@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.0 - 2024-03-26
+
+### Added
+- ability to color prompt text along with prompt input text
+- ability to clear prompt line subsequent to receiving user input
+- ability to convert color name to ansi code
+- ability to use rgb colors with prompt inputs
+
+### Removed
+#### Functions
+- print_rgb
+
 ## v1.1 - 2024-03-16
 
 ### Added

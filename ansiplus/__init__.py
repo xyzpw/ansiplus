@@ -3,38 +3,46 @@ A Python package designed to enhance code readability and CLI experience.
 """
 
 ESC = "\x1b"
-from .commands.colortext import colorize, colorizeRGB
-from .commands.styletext import stylize_text
-from .commands.cursorcontrols import *
+from . import commands
+from .commands import color2ansi
+from ansiplus.commands.colortext import *
+from ansiplus.commands.styletext import *
+from ansiplus.commands.cursorcontrols import *
 import ansiplus.ansi.colors, ansiplus.ansi.cursor, ansiplus.ansi.erase, ansiplus.ansi.styles
 
-__version__ = "1.1.0"
+__version__ = "2.0"
 __author__ = "xyzpw"
 __description__ = "A Python package designed to enhance code readability and CLI experience."
 
-def set_color(color: str|int = None, bgcolor: str|int = None):
+__all__ = [
+    "set_color",
+    "print_color",
+    "input_color",
+    "NewPrompt",
+    "print_style",
+    "save_cursor_position",
+    "restore_cursor_position",
+    "move_cursor",
+    "set_cursor_position",
+    "set_cursor_visibility",
+    "erase_row",
+    "clear_screen",
+    "reset_colors_and_styles",
+]
+
+def set_color(color: str|int|tuple = None, bgcolor: str|int|tuple = None):
     """Sets the color of text permanently or until reset.
 
-    :param color:   the foreground color that will be used on text
-    :param bgcolor: the background color that will be used on text
+    :param color:   the foreground color to be used
+    :param bgcolor: the background color to be used
     """
-    from ansiplus.uiHandler.validateinput import getColorList, validateColorList, getBackgroundColorList
-    colorList = getColorList()
-    bgColorList = getBackgroundColorList()
-    hasFG = validateColorList(color)
-    hasBG = validateColorList(bgcolor)
-    if hasFG:
-        if isinstance(color, int):
-            print(ansiplus.ansi.colors.fromid(color, "foreground"), end='')
-        elif isinstance(color, str):
-            print(colorList[color.upper()], end='')
-    if hasBG:
-        if isinstance(bgcolor, int):
-            print(ansiplus.ansi.colors.fromid(bgcolor, "background"), end='')
-        elif isinstance(bgcolor, str):
-            print(bgColorList[bgcolor.upper()], end='')
+    if color != None:
+        print(commands.color2ansi.foreground(color), end='')
+    if bgcolor != None:
+        print(commands.color2ansi.background(bgcolor), end='')
 
-def print_color(text: str, color: str|int = None, bgcolor: str|int = None):
+
+def print_color(text: str, color: str|int|tuple = None, bgcolor: str|int|tuple = None):
     """Prints colored text.
 
     :param text:    the text that will be colored and printed
@@ -43,50 +51,54 @@ def print_color(text: str, color: str|int = None, bgcolor: str|int = None):
     """
     print(colorize(text, color, bgcolor))
 
-def input_color(text: str = "", color: str|int = None, revert_color: str|int = 'RESET') -> str:
+def input_color(text: str = "", color: str|int = "RESET", revert_color: str|int = 'RESET',
+    prompt_color: str|int = "RESET", prompt_revert_color: str|int = "RESET", clearline: bool = False) -> str:
     """Changes the foreground color of prompt input text.
 
-    :param text:         the prompt text to be displayed
-    :param color:        the foreground color to use on prompt input text
-    :param revert_color: the color to revert to after the prompt is complete
+    :param text:                the prompt text to be displayed
+    :param color:               the foreground color to use on prompt input text
+    :param revert_color:        the color to revert to after the prompt is complete
+    :param prompt_color:        color of prompt text
+    :param revert_prompt_color: the color to revert the prompt text after input has been given
     """
-    from ansiplus.uiHandler.validateinput import getColorList, validateColorList
-    colorList = getColorList()
-    if not validateColorList(color):
+    from ansiplus.utils import validatecolors
+    cursor, erase = ansiplus.ansi.cursor, ansiplus.ansi.erase
+    text = commands.color2ansi.foreground(prompt_color) + text + commands.color2ansi.foreground(prompt_revert_color)
+    if not validatecolors.validate([color, revert_color, prompt_color, prompt_revert_color], "foreground"):
         raise ValueError("color does not exist")
-    if bool(revert_color):
-        if not validateColorList(color):
-            raise ValueError("reset color does not exist")
-    if isinstance(color, int):
-        out = input(text + ansiplus.ansi.colors.fromid(color))
-    elif isinstance(color, str):
-        out = input(text + colorList[color.upper()])
-    if revert_color != False:
-        if isinstance(revert_color, int):
-            print(ansiplus.ansi.colors.fromid(revert_color), end='')
-        elif isinstance(revert_color, str):
-            print(colorList[revert_color.upper()], end='')
+    out = input(text + commands.color2ansi.foreground(color))
+    print(commands.color2ansi.foreground(revert_color), end='')
+    if clearline:
+        print(f"{cursor.cursor_up(1)}{erase.LINE}", end='')
     return out
 
 class NewPrompt:
     def __init__(self):
         self.color = "RESET"
         self.revert_color = "RESET"
+        self.prompt_color = "DEFAULT"
+        self.prompt_revert_color = "DEFAULT"
         self.history = []
         self.latest = ""
-    def prompt(self, text: str = "", color: str|int = None, revert_color: str|int = None) -> str:
+    def prompt(self, text: str = "", color: str|int|tuple = None, revert_color: str|int|tuple = None,
+            prompt_color: str|int|tuple = None, prompt_revert_color: str|int|tuple = None, clearline: bool = False) -> str:
         workingColor = color if bool(color) else self.color
         workingRevertColor = revert_color if bool(revert_color) else self.revert_color
-        _out = input_color(text, workingColor, workingRevertColor)
+        workingPromptColor = prompt_color if bool(prompt_color) else self.prompt_color
+        workingPromptRevertColor = prompt_revert_color if bool(prompt_revert_color) else self.prompt_revert_color
+        _out = input_color(text, workingColor, workingRevertColor, workingPromptColor, workingPromptRevertColor, clearline)
         self.history.append(_out)
         self.latest = _out
         return _out
     def clear_history(self):
         self.history = []
         self.latest = None
-    def set_color(self, color: str, revert_color: str|int = "RESET") -> str:
+    def set_color(self, color: str|int|tuple, revert_color: str|int|tuple = "RESET"):
         self.color = color
         self.revert_color = revert_color
+    def set_prompt_color(self, color: str|int|tuple, revert_color: str|int|tuple = "RESET"):
+        self.prompt_color = color
+        self.prompt_revert_color = revert_color
 
 def print_style(text: str, style: str):
     """Prints text with the style specified.
@@ -95,14 +107,6 @@ def print_style(text: str, style: str):
     :param style: the style to use for the given text
     """
     print(stylize_text(text, style))
-
-def print_rgb(text: str, rgb: tuple = (), bg_rgb: tuple = ()):
-    """Prints text in the color of the given RGB code.
-
-    :param text:    the foreground RGB color that will be used on the printed text
-    :param bgcolor: the background RGB color that will be used on the printed text
-    """
-    print(colorizeRGB(text, rgb, bg_rgb))
 
 def save_cursor_position():
     """Saves the cursor position."""
@@ -184,23 +188,24 @@ def clear_screen(clear_type: str = "all"):
     :clear_type lineToCursor:    clears line text behind the cursor
     :clear_type line:            clears the entire line
     """
+    erase = ansiplus.ansi.erase
     match clear_type:
         case "all":
-            print(ansiplus.ansi.erase.ALL, end='')
+            print(erase.ALL, end='')
         case "screen":
-            print(ansiplus.ansi.erase.SCREEN, end='')
+            print(erase.SCREEN, end='')
         case "bottom":
-            print(ansiplus.ansi.erase.BOTTOM_SCREEN, end='')
+            print(erase.BOTTOM_SCREEN, end='')
         case "top":
-            print(ansiplus.ansi.erase.TOP_SCREEN, end='')
+            print(erase.TOP_SCREEN, end='')
         case "buffer" | "saved":
-            print(ansiplus.ansi.erase.BUFFER, end='')
+            print(erase.BUFFER, end='')
         case "cursorToLineEnd" | "cursor_to_line_end" | "cursor-to-line-end":
-            print(ansiplus.ansi.erase.CURSOR_TO_LINE_END, end='')
+            print(erase.CURSOR_TO_LINE_END, end='')
         case "lineToCursor" | "line_to_cursor" | "line-to-cursor":
-            print(ansiplus.ansi.erase.LINE_TO_CURSOR, end='')
+            print(erase.LINE_TO_CURSOR, end='')
         case "line":
-            print(ansiplus.ansi.erase.LINE, end='')
+            print(erase.LINE, end='')
 
 def reset_colors_and_styles():
     """Resets all colors and styles."""

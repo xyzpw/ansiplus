@@ -1,5 +1,12 @@
 from ansiplus import ESC
 
+__all__ = [
+    "cursor_up",
+    "cursor_down",
+    "cursor_right",
+    "cursor_left",
+]
+
 def cursor_up(no: int) -> str:
     """Moves the cursor # lines up."""
     return ESC + f"[{no}A"

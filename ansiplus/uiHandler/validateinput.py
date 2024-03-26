@@ -79,3 +79,20 @@ def validateBackgroundColorList(color: str|int) -> bool:
     elif color.upper() not in getBackgroundColorList():
         return False
     return True
+
+def validateColor(color: str|int|tuple, view: str = "foreground"):
+    if isinstance(color, int):
+        if color in range(0, 256):
+            return True
+        return False
+    view = view.lower()
+    match view:
+        case "foreground" | "fore":
+            if isinstance(color, tuple):
+                return validateRGB(color)
+            return validateColorList(color)
+        case "background" | "back":
+            if isinstance(color, tuple):
+                return validateRGB(color)
+            return validateBackgroundColorList(color)
+    return False

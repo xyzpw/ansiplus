@@ -1,5 +1,9 @@
 from ansiplus.uiHandler.validateinput import validateStyle
 
+__all__ = [
+    "stylize_text",
+]
+
 def stylize_text(text: str, style: str) -> str:
     """Stylizes the given text.
 

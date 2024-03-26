@@ -22,7 +22,7 @@ A Python package designed to enhance code readability and CLI experience.
 - A terminal emulator that uses xterm-256color
 
 > [!NOTE]
-> ANSI codes aren't just limited to xterm-256color, but they may still be limited to all features this package includes.
+> ANSi codes are not limited to xterm-256color, but they may still be limited to all features this package provides.
 
 #### Tested Terminals on Linux
 Terminal ($TERM)
@@ -32,85 +32,75 @@ Terminal ($TERM)
 - Kitty (xterm-kitty) - blinking text does not work
 
 ### Colors
-Printing colored text can be used from a single function:
+This package introduces the ability to print colors via name, id, and rgb with a single function:
 ```python
 >>> from ansiplus import print_color
->>> print_color(text="hello world", color="red")
-hello world
->>>
-```
-Optionally, you can also use the `bgcolor` parameter to change the background color.<br><br>
-Manually putting the color ANSI codes could be used at well:
-```python
->>> from ansiplus.ansi.colors import Fore, Back
->>> Fore.RED
-'\x1b[31m'
->>> Back.RED
-'\x1b[41m'
->>> print(f"{Fore.RED}hello world{Fore.RESET}") #output will appear in red
-hello world
->>>
+>>> print_color("my colored text", color=(100, 200, 255), bgcolor=198)
+'my colored text'
+>>> print_color("red text", color="red")
 ```
 
-RGB colors are also an option:
+Colors may also be manually printed:
 ```python
->>> from ansiplus import print_rgb
->>> print_rgb(text="custom rgb text", rgb=(200, 108, 0))
-custom rgb text
->>>
+>>> from ansiplus.ansi.colors import Fore
+>>> print(f"{Fore.GREEN}green text{Fore.RESET}")
 ```
 
 ### User Input
-User input during a prompt can be colored:
+Along with colors, users can be prompted for input which can be colored:
 ```python
 >>> from ansiplus import input_color
->>> foo = input_color(text="name: ", color="blue") #users input will appear in blue
-name:
->>>
+>>> txt = input_color("example: ", color="blue")
+>>> print(txt)
+'my input'
 ```
 
-Classes can be used for input, which will allow the ability to have user input history:
+Prompting input can also store history if you assign it to a variable:
 ```python
 >>> from ansiplus import NewPrompt
->>> myprompt = NewPrompt()
->>> myprompt.set_color("blue")
->>> myprompt.prompt("say something: ")
-say something: this text is blue
-'this text is blue'
->>> myprompt.prompt("say something: ", 'red')
-say something: this text is red, default is blue
-'this text is red, default is blue'
->>> myprompt.latest
-'this text is red, default is blue'
->>> myprompt.history
-['this text is blue', 'this text is red, default is blue']
->>>
+>>> ui = NewPrompt()
+>>> ui.set_color("red")
+>>> ui.set_prompt_color("green")
+>>> ui.prompt("prompt class example: ")
+>>> ui.history
+['my text']
+>>> ui.latest
+'my text'
+>>> ui.prompt("prompt class example 2: ", "yellow")
+>>> ui.latest
+'this text is yellow, but default is red'
 ```
 
+#### Clearing Prompt Lines
+After receiving user input, the line can be cleared:
+```python
+from ansiplus import input_color
+while True:
+    input_color("forever input: ", clearline=True)
+```
+The above code sample will ask for input forever, after every input, the line will clear and the input will be prompted again on the same line.
+
 ### Text Styles
-Text can be stylized and printed:
+This package includes several several styles that can be used:
 ```python
 >>> from ansiplus import print_style
->>> print_style("bold text", 'bold')
-bold text
->>>
+>>> print_style("underline text", "underline")
+'underline text'
 ```
-Like colors, this can also be done manually:
+
+Like colors, styles may also be used manually:
 ```python
 >>> from ansiplus.ansi.styles import BOLD, BOLD_RESET
->>> BOLD
-'\x1b[1m'
->>> BOLD_RESET
-'\x1b[22m'
 >>> print(f"{BOLD}bold text{BOLD_RESET}")
-bold text
+'bold text'
 >>>
 ```
 
 ### More Functions
-There are more ANSI code features beyond colors and styles, these could be viewed by using `help(ansiplus)` inside the python interpreter.
+There are more ANSI codes featured beyond colors and styles, these could be viewed by using `help(ansiplus)` inside the python interpreter.
 
 ## Developers
+When building the package for testing, it is recommended to use `python3 -m build`.
 ### Wheels
 When building the package for testing, it is recommended to use `python3 -m build`.
 ### PIP Virtual Environments
@@ -123,4 +113,3 @@ Contributions must not include:
 - changes to the version number
 - wheel files or egg-info files
 - spaghetti code
-

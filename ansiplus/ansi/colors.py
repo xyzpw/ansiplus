@@ -1,4 +1,13 @@
 from ansiplus import ESC
+
+__all__ = [
+    "Fore",
+    "Back",
+    "from_rgb",
+    "fromid",
+]
+
+#NOTE: RESET and DEFAULT are the same
 class Fore:
     BLACK = ESC + "[30m"
     RED = ESC + "[31m"
@@ -17,6 +26,7 @@ class Fore:
     BRIGHT_CYAN = ESC + "[96m"
     BRIGHT_WHITE = ESC + "[97m"
     RESET = ESC + "[39m"
+    DEFAULT = ESC + "[39m"
 
 class Back:
     BLACK = ESC + "[40m"
@@ -36,6 +46,7 @@ class Back:
     BRIGHT_CYAN = ESC + "[106m"
     BRIGHT_WHITE = ESC + "[107m"
     RESET = ESC + "[49m"
+    DEFAULT = ESC + "[49m"
 
 def from_rgb(rgb: tuple, position: str = "foreground"):
     r, g, b = rgb[0], rgb[1], rgb[2]

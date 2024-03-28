@@ -1,14 +1,18 @@
 
 if __name__ == "__main__":
-    import ansiplus
+    from ansiplus import *
     print("print_color: ", end='')
-    ansiplus.print_color("red example", "red")
+    print_color("red example", "red")
     print("print_color: ", end='')
-    ansiplus.print_color("red example", bgcolor="red")
-    print("print_rgb:   ", end='')
-    ansiplus.print_rgb("rgb example (200, 100, 50)", (200, 100, 50))
-    print("print_rgb:   ", end='')
-    ansiplus.print_rgb("rgb example (200, 100, 50)", bg_rgb=(200, 100, 50))
+    print_color("red example", bgcolor="red")
+    print("print_color: ", end='')
+    print_color("rgb example (200, 100, 50)", (200, 100, 50))
+    print("print_color: ", end='')
+    print_color("rgb example (200, 100, 50)", bgcolor=(200, 100, 50))
+    print("print_color: ", end='')
+    print_color("rainbow example", "rainbow")
+    print("print_color: ", end='')
+    print_color("random example", "random")
     styleList = [
         'bold', 'dim',
         'italic', 'underline',
@@ -23,4 +27,4 @@ if __name__ == "__main__":
             print("this following text should not be visible: ", end='')
         else:
             print("print_style: ", end='')
-        ansiplus.print_style(s, style=s)
+        print_style(s, style=s)

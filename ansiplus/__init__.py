@@ -10,9 +10,10 @@ from ansiplus.commands.styletext import *
 from ansiplus.commands.cursorcontrols import *
 import ansiplus.ansi.colors, ansiplus.ansi.cursor, ansiplus.ansi.erase, ansiplus.ansi.styles
 
-__version__ = "2.0"
+__version__ = "2.1-rc1"
 __author__ = "xyzpw"
 __description__ = "A Python package designed to enhance code readability and CLI experience."
+__license__ = "MIT"
 
 __all__ = [
     "set_color",
@@ -61,11 +62,9 @@ def input_color(text: str = "", color: str|int = "RESET", revert_color: str|int 
     :param prompt_color:        color of prompt text
     :param revert_prompt_color: the color to revert the prompt text after input has been given
     """
-    from ansiplus.utils import validatecolors
+    from ansiplus.utils import promptColorer
     cursor, erase = ansiplus.ansi.cursor, ansiplus.ansi.erase
-    text = commands.color2ansi.foreground(prompt_color) + text + commands.color2ansi.foreground(prompt_revert_color)
-    if not validatecolors.validate([color, revert_color, prompt_color, prompt_revert_color], "foreground"):
-        raise ValueError("color does not exist")
+    text = promptColorer.colorizePrompt(text, prompt_color, prompt_revert_color)
     out = input(text + commands.color2ansi.foreground(color))
     print(commands.color2ansi.foreground(revert_color), end='')
     if clearline:

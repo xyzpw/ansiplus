@@ -46,6 +46,19 @@ Colors may also be manually printed:
 >>> print(f"{Fore.GREEN}green text{Fore.RESET}")
 ```
 
+#### Rainbow & Random Colors
+Foreground text can be rainbow colored:
+```python
+>>> from ansiplus import print_color
+>>> print_color("this text is rainbow colored", "rainbow")
+'this text is rainbow colored'
+>>> print_color("each character will be a random color", "random")
+'each character will be a random color'
+```
+
+> [!WARNING]
+> Using rainbow or random color option uses a lot of ANSI codes, length of string increases exponentially.
+
 ### User Input
 Along with colors, users can be prompted for input which can be colored:
 ```python
@@ -69,6 +82,13 @@ Prompting input can also store history if you assign it to a variable:
 >>> ui.prompt("prompt class example 2: ", "yellow")
 >>> ui.latest
 'this text is yellow, but default is red'
+```
+
+#### Rainbow & Random Colors
+Prompt foreground text can also be colored rainbow:
+```python
+>>> from ansiplus import input_color
+>>> input_color("this text is rainbow: ", prompt_color="rainbow")
 ```
 
 #### Clearing Prompt Lines

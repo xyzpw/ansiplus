@@ -1,5 +1,5 @@
 import setuptools
-from ansiplus import __version__, __author__, __description__
+import ansiplus
 
 def getReadme():
     with open("README.md", 'r') as f:
@@ -7,10 +7,10 @@ def getReadme():
 
 setuptools.setup(
     name="ansiplus",
-    author=__author__,
-    maintainer=__author__,
-    version=__version__,
-    description=__description__,
+    author=ansiplus.__author__,
+    maintainer=ansiplus.__author__,
+    version=ansiplus.__version__,
+    description=ansiplus.__description__,
     url="https://github.com/xyzpw/ansiplus/",
     python_required=">= 3.10",
     long_description=getReadme(),
@@ -25,5 +25,5 @@ setuptools.setup(
         "Programming Language :: Python :: 3.11",
     ],
     keywords=["ansi", "cursor", "style", "color"],
-    license="MIT",
+    license=ansiplus.__license__,
 )

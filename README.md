@@ -6,7 +6,8 @@
 
 A Python package designed to enhance code readability and CLI experience.
 
-![ansiplus-preview](https://github.com/xyzpw/ansiplus/assets/76017734/bf852703-e04a-444e-aa78-7bdaae98ac41)
+![ansiplus-v2_1-preview](https://github.com/xyzpw/ansiplus/assets/76017734/4078141f-578e-443c-aec9-d08110f5f5e9)
+
 
 ## Usage
 > [!WARNING]

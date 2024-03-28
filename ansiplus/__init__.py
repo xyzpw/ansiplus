@@ -10,7 +10,7 @@ from ansiplus.commands.styletext import *
 from ansiplus.commands.cursorcontrols import *
 import ansiplus.ansi.colors, ansiplus.ansi.cursor, ansiplus.ansi.erase, ansiplus.ansi.styles
 
-__version__ = "2.1-rc1"
+__version__ = "2.1"
 __author__ = "xyzpw"
 __description__ = "A Python package designed to enhance code readability and CLI experience."
 __license__ = "MIT"

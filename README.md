@@ -3,6 +3,7 @@
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/ansiplus)
 ![GitHub repo size](https://img.shields.io/github/repo-size/xyzpw/ansiplus)
 ![PyPI - License](https://img.shields.io/pypi/l/ansiplus)
+![PyPI - Version](https://img.shields.io/pypi/v/ansiplus)
 
 A Python package designed to enhance code readability and CLI experience.
 
@@ -48,7 +49,7 @@ Colors may also be manually printed:
 ```
 
 #### Rainbow & Random Colors
-Foreground text can be rainbow colored:
+Text can be colored to resemble a rainbow:
 ```python
 >>> from ansiplus import print_color
 >>> print_color("this text is rainbow colored", "rainbow")
@@ -58,7 +59,7 @@ Foreground text can be rainbow colored:
 ```
 
 > [!WARNING]
-> Using rainbow or random color option uses a lot of ANSI codes, length of string increases exponentially.
+> Using rainbow or random color option uses a lot of ANSI codes.
 
 ### User Input
 Along with colors, users can be prompted for input which can be colored:

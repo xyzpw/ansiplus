@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.1 (2024-03-28)
+
+### Added
+- Foreground colors:
+  - rainbow: resembles the colors of a rainbow
+  - random: assigns a random color to each character
+
+### Changed
+- tests: prompt text for colored input
+
+### Bug Fixes
+- inability to validate prompt color
+
 ## v2.0 - 2024-03-26
 
 ### Added

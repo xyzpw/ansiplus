@@ -1,5 +1,10 @@
 # Changelog
 
+## v3.0 (2024-08-01)
+- changed submodule `tests` to `tools` to clarify purpose
+- changed order of some functions:
+  - move_cursor(direction, no) is now move_cursor(no, direction)
+
 ## v2.1 (2024-03-28)
 
 ### Added

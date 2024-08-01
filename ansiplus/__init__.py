@@ -10,7 +10,7 @@ from ansiplus.commands.styletext import *
 from ansiplus.commands.cursorcontrols import *
 import ansiplus.ansi.colors, ansiplus.ansi.cursor, ansiplus.ansi.erase, ansiplus.ansi.styles
 
-__version__ = "2.1"
+__version__ = "3.0"
 __author__ = "xyzpw"
 __description__ = "A Python package designed to enhance code readability and CLI experience."
 __license__ = "MIT"
@@ -115,13 +115,13 @@ def restore_cursor_position():
     """Restores cursor to the last saved position."""
     print(ansiplus.ansi.cursor.RESTORE_POSITION, end='')
 
-def move_cursor(direction: str, no: int = 1):
+def move_cursor(no: str, direction: int = 1):
     """Moves the cursor up, down, right, and left by a specified distance.
     Optionally, you can move the cursor to the home position (0, 0).
     Setting the cursor position to "home" will render the 'no' argument ineffective.
 
-    :param direction: the direction of which the cursor will move to
     :param no:        the number of column/rows the cursor will move
+    :param direction: the direction of which the cursor will move to
     """
     if no < 0:
         raise ValueError("line numbers must be a positive value")
@@ -138,11 +138,14 @@ def move_cursor(direction: str, no: int = 1):
             # the `no` arg has no effect on this option
             print(ansiplus.ansi.cursor.HOME, end='')
 
-def set_cursor_position(row: int, column: int):
-    """Moves the cursor to a specific position according to the specified row and column."""
-    if not isinstance(row, int) or not isinstance(column, int):
-        raise TypeError("row and column values must be integers")
-    print(ansiplus.ansi.cursor.set_position(row, column), end='')
+def set_cursor_position(line: int, column: int):
+    """
+    Moves the cursor to a specific position according to the specified row and column.
+
+    :param line: line number of the new cursor position
+    :param column: column line of the new cursor position
+    """
+    print(ansiplus.ansi.cursor.set_position(line, column), end='')
 
 def set_cursor_visibility(visible: bool):
     """Makes the cursor visible or invisible.

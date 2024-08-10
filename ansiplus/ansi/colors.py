@@ -5,6 +5,7 @@ __all__ = [
     "Back",
     "from_rgb",
     "fromid",
+    "fromhex",
 ]
 
 #NOTE: RESET and DEFAULT are the same
@@ -60,3 +61,14 @@ def fromid(colorid: int, position: str = "foreground"):
         return ESC + f"[38;5;{colorid}m"
     elif position.lower() in ["back", "background"]:
         return ESC + f"[48;5;{colorid}m"
+
+def fromhex(hexString: str, position: str = "foreground"):
+    """Converts hex to rgb and returns the ansi code for that color."""
+    hexString = hexString.replace("#", "")
+    position = position.lower()
+    if len(hexString) == 3:
+        hexSegments = [hexString[i]*2 for i in range(3)]
+    elif len(hexString) == 6:
+        hexSegments = [hexString[i:i+2] for i in range(0, 6, 2)]
+    color = tuple([int(str(i), 16) for i in hexSegments])
+    return from_rgb(color, position)

@@ -81,6 +81,8 @@ def validateBackgroundColorList(color: str|int) -> bool:
     return True
 
 def validateColor(color: str|int|tuple, view: str = "foreground"):
+    if str(color).startswith("#") and len(color) in [3+1, 6+1]:
+        return True
     if isinstance(color, int):
         if color in range(0, 256):
             return True

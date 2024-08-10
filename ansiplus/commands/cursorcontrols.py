@@ -8,17 +8,17 @@ __all__ = [
 ]
 
 def cursor_up(no: int) -> str:
-    """Moves the cursor # lines up."""
+    """Returns the ANSI code which moves the cursor # rows up."""
     return ESC + f"[{no}A"
 
 def cursor_down(no: int) -> str:
-    """Moves the cursor # lines down."""
+    """Returns the ANSI code which moves the cursor # rows down."""
     return ESC + f"[{no}B"
 
 def cursor_right(no: int) -> str:
-    """Moves the cursor # columns right."""
+    """Returns the ANSI code which moves the cursor # columns to the right."""
     return ESC + f"[{no}C"
 
 def cursor_left(no: int) -> str:
-    """Moves the cursor # columns right."""
+    """Returns the ANSI code which moves the cursor # columns to the left."""
     return ESC + f"[{no}D"

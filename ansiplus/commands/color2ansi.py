@@ -6,7 +6,10 @@ __all__ = [
 ]
 
 def foreground(color: str|int|tuple) -> str:
+    isHex = str(color).startswith("#") and len(color) in [3+1, 6+1]
     if isinstance(color, str):
+        if isHex:
+            return fromhex(color)
         color = color.upper()
         for k,v in vars(Fore).items():
             if k == color:
@@ -18,7 +21,10 @@ def foreground(color: str|int|tuple) -> str:
         return from_rgb(color)
 
 def background(color: str|int|tuple) -> str:
+    isHex = str(color).startswith("#") and len(color) in [3+1, 6+1]
     if isinstance(color, str):
+        if isHex:
+            return fromhex(color, "background")
         color = color.upper()
         for k,v in vars(Back).items():
             if k == color:

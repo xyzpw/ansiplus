@@ -1,5 +1,6 @@
 from ansiplus.commands import color2ansi
 from random import randint
+from ansiplus.ansi.colors import *
 
 __all__ = [
     "colorize",
@@ -46,6 +47,18 @@ def makeRainbow(text: str) -> str:
         rainbowText += color2ansi.foreground(iterColor) + textList[i] + color2ansi.foreground("RESET")
     return rainbowText
 
+def makeHexColor(txt: str, color, isFore: bool):
+    """Converts text wrapped inside ANSI color codes to hex color."""
+    hexCode = fromhex(color, "foreground" if isFore else "background")
+    resetCode = color2ansi.foreground("RESET") if isFore else color2ansi.background("RESET")
+    return hexCode + txt + resetCode
+
+def makeRgbColor(txt: str, color: tuple, isFore: bool):
+    """Returns text wrapped inside rgb ansi codes."""
+    rgbCode = from_rgb(color, "foreground" if isFore else "background")
+    resetCode = color2ansi.foreground("RESET") if isFore else color2ansi.background("RESET")
+    return rgbCode + txt + resetCode
+
 def colorize(text: str, color: str|int|tuple = None, bgcolor: str|int|tuple = None) -> str:
     """Returns the given text wrapped inside the specified colors ANSI code.
 
@@ -53,12 +66,26 @@ def colorize(text: str, color: str|int|tuple = None, bgcolor: str|int|tuple = No
     :param color:   the foreground color of which ANSI's code will wrap the given text
     :param bgcolor: the background color of which ANSI's code will wrap the given text
     """
-    if str(color).lower() == "rainbow":
-        text = makeRainbow(text)
-    elif str(color).lower() == "random":
-        text = randomizeCharColors(text)
-    elif color != None:
-        text = color2ansi.foreground(color) + text + color2ansi.foreground("RESET")
-    if bgcolor != None:
-        text = color2ansi.background(bgcolor) + text + color2ansi.background("RESET")
+    checkIsHex = lambda _color: _color.startswith("#") if isinstance(_color, str) else False
+    checkIsRgb = lambda _color: isinstance(_color, tuple)
+    isUsingFg = color != None
+    isUsingBg = bgcolor != None
+    if isUsingFg:
+        if color == "rainbow":
+            text = makeRainbow(text)
+        elif color == "random":
+            text = randomizeCharColors(text)
+        elif checkIsHex(color):
+            text = makeHexColor(text, color, True)
+        elif checkIsRgb(color):
+            text = makeRgbColor(text, color, True)
+        else:
+            text = color2ansi.foreground(color) + text + color2ansi.foreground("RESET")
+    if isUsingBg:
+        if checkIsHex(bgcolor):
+            text = makeHexColor(text, bgcolor, False)
+        elif checkIsRgb(bgcolor):
+            text = makeRgbColor(text, bgcolor, False)
+        else:
+            text = color2ansi.background(bgcolor) + text + color2ansi.background("RESET")
     return text

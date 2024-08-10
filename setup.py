@@ -23,6 +23,7 @@ setuptools.setup(
         "Intended Audience :: Developers",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
     ],
     keywords=["ansi", "cursor", "style", "color"],
     license=ansiplus.__license__,

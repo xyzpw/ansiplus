@@ -9,8 +9,9 @@ from ansiplus.commands.colortext import *
 from ansiplus.commands.styletext import *
 from ansiplus.commands.cursorcontrols import *
 import ansiplus.ansi.colors, ansiplus.ansi.cursor, ansiplus.ansi.erase, ansiplus.ansi.styles
+import ansiplus.ansi
 
-__version__ = "3.0"
+__version__ = "3.1"
 __author__ = "xyzpw"
 __description__ = "A Python package designed to enhance code readability and CLI experience."
 __license__ = "MIT"
@@ -150,7 +151,8 @@ def set_cursor_position(line: int, column: int):
 def set_cursor_visibility(visible: bool):
     """Makes the cursor visible or invisible.
 
-    :param state: the state of the cursor, true for visible, false for invisible
+    :param visible: cursor visibility, true for visible, false for invisible
+    :type visible: bool
     """
     if not isinstance(visible, bool):
         raise TypeError("cursor visibility must be type boolean")

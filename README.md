@@ -34,12 +34,13 @@ Terminal ($TERM)
 - Kitty (xterm-kitty) - blinking text does not work
 
 ### Colors
-This package introduces the ability to print colors via name, id, and rgb with a single function:
+This package introduces the ability to print colors via name, id, rgb, and hex codes with a single function:
 ```python
 >>> from ansiplus import print_color
 >>> print_color("my colored text", color=(100, 200, 255), bgcolor=198)
 'my colored text'
 >>> print_color("red text", color="red")
+>>> print("hex color 'f06'", color="#f06")
 ```
 
 Colors may also be manually printed:

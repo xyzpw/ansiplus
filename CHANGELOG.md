@@ -1,5 +1,8 @@
 # Changelog
 
+## v3.1 (2024-08-10)
+- added ability to use hex colors
+
 ## v3.0 (2024-08-01)
 - changed submodule `tests` to `tools` to clarify purpose
 - changed order of some functions:
